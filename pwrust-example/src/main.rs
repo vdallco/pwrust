@@ -1,6 +1,4 @@
 extern crate pwrust_lib;
-extern crate serde;
-extern crate serde_json;
 
 use pwrust_lib::utils::nonceOfUser;
 use pwrust_lib::utils::balanceOf;
@@ -9,21 +7,7 @@ use pwrust_lib::utils::blocksCount;
 use pwrust_lib::utils::validatorsCount;
 use pwrust_lib::utils::getBlock;
 
-use serde::{Deserialize, Serialize};
-use serde_json::Value;
-
 use std::error::Error;
-
-#[derive(Debug, Deserialize)]
-struct Response {
-    data: Data,
-    status: String,
-}
-
-#[derive(Debug, Deserialize)]
-struct Data {
-    blocksCount: i32,
-}
 
 #[tokio::main]
 async fn main() {
@@ -31,27 +15,21 @@ async fn main() {
     println!("Test for {}", address);
 
     let nonce = nonceOfUser(address).await;
-    println!("Nonce: {:?}", nonce);
+    println!("Nonce: {:?}", nonce.unwrap());
     
     let balance = balanceOf(address).await;
-    println!("Balance: {:?}", balance);
+    println!("Balance: {:?}", balance.unwrap());
     
     let feePb = feePerByte().await;
-    println!("Fee per byte: {:?}", feePb);
+    println!("Fee per byte: {:?}", feePb.unwrap());
     
     let blocksCnt = blocksCount().await;
-    println!("Blocks count: {:?}", blocksCnt);
-     
-    let validatorsCnt = validatorsCount().await;
-    println!("Validators count: {:?}", validatorsCnt);
-    
 	let blocksCntUnwrapped = blocksCnt.unwrap();
-	println!("Blocks Count unwrapped: {}", blocksCntUnwrapped);
-	
-	let response: Response = serde_json::from_str(&blocksCntUnwrapped).unwrap();
-	let blocksCountNo = response.data.blocksCount;
-	println!("blocksCountno: {}", blocksCountNo);
-	
-	let latestBlock = getBlock(blocksCountNo - 1).await;
+    println!("Blocks count: {:?}", blocksCntUnwrapped);
+    
+    let validatorsCnt = validatorsCount().await;
+    println!("Validators count: {:?}", validatorsCnt.unwrap());
+    
+	let latestBlock = getBlock(blocksCntUnwrapped - 1).await;
 	println!("Latest block: {:?}", latestBlock);
 }
