@@ -1,0 +1,12 @@
+[package]
+name = "pwrust-test"
+version = "0.0.1"
+authors = ["vdallco"]
+edition = "2021"
+
+[dependencies]
+pwrust_lib = { path = "../pwrust-lib" }
+tokio = { version = "1", features = ["macros", "rt-multi-thread"] }
+serde =  { version = "1.0", features = ["derive"] }
+serde_derive = "1.0"
+serde_json = "1.0.108"

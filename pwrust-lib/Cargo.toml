@@ -1,0 +1,10 @@
+[package]
+name = "pwrust_lib"
+version = "0.0.1"
+authors = ["vdallco"]
+edition = "2021"
+
+[dependencies]
+reqwest = "0.11"
+tokio = { version = "1", features = ["macros", "rt-multi-thread"] }
+
